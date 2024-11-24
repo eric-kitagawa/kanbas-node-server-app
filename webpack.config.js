@@ -1,10 +1,10 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = {
+export default {
   mode: 'production',
-  entry: './index.js', // Adjust to match your app's entry file
+  entry: './index.js', // Adjust this to your entry file
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve('./dist'), // Adjust the output path if needed
   },
 };
