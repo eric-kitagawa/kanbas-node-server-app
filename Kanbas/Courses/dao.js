@@ -1,4 +1,5 @@
 import Database from "../Database/index.js";
+
 export function findAllCourses() {
     return Database.courses;
 }
@@ -25,4 +26,6 @@ export function updateCourse(courseId, courseUpdates) {
     const course = courses.find((course) => course._id === courseId);
     Object.assign(course, courseUpdates);
     return course;
-}
+  }
+  
+
