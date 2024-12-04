@@ -9,6 +9,10 @@
     "start": "NODE_ENV=development node index.js",
     "build": "NODE_ENV=production webpack --config webpack.config.js"
   },
+  "engines": {
+    "node": "22.x",
+    "npm": "10.x"
+  },
   "keywords": [
     "Node",
     "REST",
@@ -30,9 +34,12 @@
     "express": "^4.21.1",
     "express-session": "^1.18.1",
     "mongoose": "^8.8.3",
+    "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
+    "querystring-es3": "^0.2.1",
     "stream-browserify": "^3.0.0",
+    "url": "^0.11.4",
     "util": "^0.12.5"
   },
   "devDependencies": {

@@ -1,60 +1,42 @@
-import session from "express-session";
-import express from 'express';
+import "dotenv/config";
+import express from 'express'
 import Hello from "./Hello.js"
 import Lab5 from "./Lab5/index.js";
 import cors from "cors";
 import UserRoutes from "./Kanbas/Users/routes.js";
+import session from "express-session";
 import CourseRoutes from "./Kanbas/Courses/routes.js";
-import "dotenv/config";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
-import mongoose from "mongoose";
-import "dotenv/config";
-
-const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
-mongoose.connect(CONNECTION_STRING);
-const app = express();
-
-app.use(
-    cors({
-        credentials: true,
-        origin: process.env.NETLIFY_URL || "http://localhost:3000",
-    })
-);
-
-app.use(express.json());
+import EnrollmentRoutes from "./Kanbas/Enrollments/routes.js";
+const app = express()
+app.use(cors(
+    {credentials: true,
+        origin: process.env.NETLIFY_URL || "http://localhost:3000",}
+));
 
 const sessionOptions = {
     secret: process.env.SESSION_SECRET || "kanbas",
     resave: false,
     saveUninitialized: false,
-    cookie: {
-        sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
-        secure: process.env.NODE_ENV !== "development",
-        httpOnly: true,
-        domain: process.env.NODE_ENV === "production" ? process.env.NODE_SERVER_DOMAIN : undefined,
-    },
-};
-if (process.env.NODE_ENV !== "development") {
+  };
+  if (process.env.NODE_ENV !== "development") {
     sessionOptions.proxy = true;
-}
-app.use(session(sessionOptions));
-
-app.use((req, res, next) => {
-    console.log("Incoming Request:");
-    console.log("URL:", req.url);
-    console.log("Method:", req.method);
-    console.log("Session ID:", req.sessionID);
-    console.log("Session Data:", req.session);
-    console.log("Cookies in Request:", req.headers.cookie);
-    next();
-});
-
-Lab5(app);
-UserRoutes(app);
+    sessionOptions.cookie = {
+      sameSite: "none",
+      secure: true,
+      domain: process.env.NODE_SERVER_DOMAIN,
+    };
+  }
+  app.use(session(sessionOptions));
+  
+  
+app.use(express.json())
 CourseRoutes(app);
-AssignmentRoutes(app);
-Hello(app);
+Lab5(app)
+Hello(app)
+UserRoutes(app);
 ModuleRoutes(app);
-app.listen(process.env.PORT || 4000);
-
+AssignmentRoutes(app);
+EnrollmentRoutes(app); 
+app.listen(process.env.PORT || 4000)
